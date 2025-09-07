@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DocumentIngestionService {
 
-    @Value("classpath:/pdf/spring-boot-reference.pdf")
+    @Value("classpath:/pdf/test2.txt")
     private Resource resource;
     private final VectorStore vectorStore;
 
@@ -28,7 +28,12 @@ public class DocumentIngestionService {
     public void run() {
         log.info("Start loading PDF file");
         TikaDocumentReader reader = new TikaDocumentReader(resource);
-        TextSplitter textSplitter = new TokenTextSplitter();
+        TextSplitter textSplitter = TokenTextSplitter.builder()
+                .withChunkSize(200)
+                .withMinChunkLengthToEmbed(50)
+                .withMaxNumChunks(10000)
+                .withKeepSeparator(true)
+                .build();
         log.info("Ingesting PDF file");
         List<Document> split = textSplitter.split(reader.read());
         vectorStore.accept(split);

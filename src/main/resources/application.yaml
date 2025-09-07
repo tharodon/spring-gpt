@@ -1,7 +1,4 @@
-
 spring:
-  security:
-    bas
   application:
     name: spring-gpt
   datasource:
@@ -14,16 +11,18 @@ spring:
       init:
         pull-model-strategy: never
       embedding:
-        model: mxbai-embed-large
+        model: ollama
         options:
-          temperature: 0.5
-#          top-p: 0.95
-#          top-k: 100
-#          repeat-penalty: 1.0
-#          num-predict: 2048
+          temperature: 0.1
+          top-p: 0.5
+          top-k: 1
+          repeat-penalty: 1.1
+          num-predict: 1024
+          model: mxbai-embed-large
       chat:
         options:
-          model: dolphin-llama3:8b
+          model: 'gpt-oss'
+          temperature: 0.3
     vectorstore:
       pgvector:
         index-type: hnsw
@@ -31,6 +30,8 @@ spring:
         dimensions: 1024
         max-document-batch-size: 10000 # Optional: Maximum number of documents per batch
         initialize-schema: true
+      observations:
+        log-query-response: true
 
 logging:
   level:
@@ -38,6 +39,8 @@ logging:
       springframework:
         ai:
           vectorstore: debug
-          ollama: debug
+          chat:
+            client:
+              advisor: debug
 server:
   port: 9191

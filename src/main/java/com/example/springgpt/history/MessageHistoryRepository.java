@@ -7,4 +7,6 @@ import java.util.List;
 public interface MessageHistoryRepository extends JpaRepository<MessageHistory, Integer> {
 
     List<MessageHistory> findAllBySessionIdOrderByCreatedAt(String sessionId);
+
+    void deleteBySessionId(String conversationId);
 }

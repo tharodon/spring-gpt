@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.ai.chat.messages.MessageType;
 
 import java.time.LocalDateTime;
 
@@ -22,9 +23,10 @@ public class MessageHistory {
 
     private String sessionId;
 
-    private String userMessage;
+    private String message;
 
-    private String assistantMessage;
+    @Enumerated(value = EnumType.STRING)
+    private MessageType type;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
